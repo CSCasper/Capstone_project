@@ -53,7 +53,7 @@ void setup() {
   Serial.println();
   if(client.connect(server, PORT)){
     client.println("GET / HTTP/1.1");
-    client.println("POST /add.php HTTP/1.1");
+    client.println("POST /testfile.py HTTP/1.1");
     client.println("Connection: close");
     client.println();
   }
