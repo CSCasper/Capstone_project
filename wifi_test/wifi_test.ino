@@ -15,37 +15,33 @@
 #include "arduino_secrets.h" 
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
 char ssid[] = SECRET_SSID;        // your network SSID (name)
-char pass[] = SECRET_PASS;    // your network password (use for WPA, or use as key for WEP)
-int status = WL_IDLE_STATUS;     // the Wifi radio's status
+char pass[] = SECRET_PASS;        // your network password (use for WPA, or use as key for WEP)
+int status = WL_IDLE_STATUS;      // the Wifi radio's status
+
+//Server IP (local)
+IPAddress server(192, 168, 1, 100);
+
+//Server IP (public)
+//IPAddress server(104, 231, 149, 111);
+
+WiFiClient client;
 
 void setup() {
+  
   //Initialize serial and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
   }
-
-  // check for the WiFi module:
-  if (WiFi.status() == WL_NO_MODULE) {
-    Serial.println("Communication with WiFi module failed!");
-    // don't continue
-    while (true);
-  }
-
-  String fv = WiFi.firmwareVersion();
-  if (fv < "1.0.0") {
-    Serial.println("Please upgrade the firmware");
-  }
-
+  
   // attempt to connect to Wifi network:
   while (status != WL_CONNECTED) {
     Serial.print("Attempting to connect to WPA SSID: ");
     Serial.println(ssid);
     // Connect to WPA/WPA2 network:
     status = WiFi.begin(ssid, pass);
-
-    // wait 10 seconds for connection:
-    delay(10000);
+    
+    delay(1000);
   }
 
   // you're connected now, so print out the data:
@@ -53,19 +49,30 @@ void setup() {
   printCurrentNet();
   printWifiData();
 
+  Serial.println("Attempting to connect to webserver");
+  Serial.println();
+  if(client.connect(server, PORT)){
+    client.println("GET / HTTP/1.1");
+    client.println("POST /add.php HTTP/1.1");
+    client.println("Connection: close");
+    client.println();
+  }
+  else{
+    Serial.print("Failed to connect!");
+  }
 }
 
 void loop() {
-  // check the network connection once every 10 seconds:
-  delay(10000);
-  printCurrentNet();
+  while(client.available()){
+    char c = client.read();
+    Serial.write(c);
+  }
 }
 
 void printWifiData() {
   // print your board's IP address:
   IPAddress ip = WiFi.localIP();
   Serial.print("IP Address: ");
-  Serial.println(ip);
   Serial.println(ip);
 
   // print your MAC address:
