@@ -19,10 +19,10 @@ char pass[] = SECRET_PASS;        // your network password (use for WPA, or use 
 int status = WL_IDLE_STATUS;      // the Wifi radio's status
 
 //Server IP (local)
-IPAddress server(192, 168, 1, 100);
+//IPAddress server(192, 168, 1, 100);
 
 //Server IP (public)
-//IPAddress server(104, 231, 149, 111);
+IPAddress server(104, 231, 149, 111);
 
 WiFiClient client;
 
