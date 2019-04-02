@@ -48,14 +48,20 @@ void setup() {
   Serial.print("You're connected to the network");
   printCurrentNet();
   printWifiData();
-
+  
   Serial.println("Attempting to connect to webserver");
   Serial.println();
+
+  String PostData = "sample={ \"key\": 1 }";
   if(client.connect(server, PORT)){
-    client.println("GET / HTTP/1.1");
-    client.println("POST /add.php HTTP/1.1");
+    //client.println("GET / HTTP/1.1");
+    client.println("POST /test HTTP/1.1");
     client.println("Connection: close");
+    client.println("Content-Type: application/x-www-form-urlencoded;");
+    client.print("Content-Length: ");
+    client.println(PostData.length());
     client.println();
+    client.println(PostData);
   }
   else{
     Serial.print("Failed to connect!");
