@@ -3,6 +3,7 @@ import table.tableFactory as tbFactory
 from io import BytesIO
 import codecs
 
+
 PORT = 8080
 cssHeader = '''
 <!DOCTYPE html>
@@ -64,6 +65,7 @@ class Handler(BaseHTTPRequestHandler):
                 i = i + 1
 
             table.trashCans[int(data[0])].trashLevel = int(data[1])
+
         except:
             print("Something went wrong when parsing!")
 
