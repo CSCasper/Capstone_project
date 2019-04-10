@@ -31,6 +31,7 @@ htmlFooter = '''
 table = tbFactory.Table()
 table.add_can(trash_can=tbFactory.TrashCan(1, 0))
 
+
 class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
@@ -38,11 +39,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/html")
         self.end_headers()
 
-        #file = codecs.open("index.html", 'r')
-        #html = file.read()
-
-        htmlTable = tbFactory.htmlTableHeader + table.get_table_block() + tbFactory.htmlTableFooter
-        html = cssHeader + htmlHeader + htmlTable + htmlFooter
+        html_table = tbFactory.htmlTableHeader + table.get_table_block() + tbFactory.htmlTableFooter
+        html = cssHeader + htmlHeader + html_table + htmlFooter
 
         self.wfile.write(html.encode())
 
@@ -69,7 +67,7 @@ class Handler(BaseHTTPRequestHandler):
                 i = i + 1
 
             # Update table model with new data
-            table.trashCans[int(data[0])].trashLevel = int(data[1])
+            table.trash_cans[int(data[0])].trash_level = int(data[1])
 
         except:
             print("Something went wrong when parsing!")

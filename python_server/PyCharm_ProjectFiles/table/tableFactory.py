@@ -13,25 +13,25 @@ htmlTableFooter = '''
 
 
 class TrashCan:
-    def __init__(self, trashID, trashLevel):
-        self.trashID = trashID
-        self.trashLevel = trashLevel
+    def __init__(self, trash_id, trash_level):
+        self.trash_id = trash_id
+        self.trash_level = trash_level
         self.trash_state = 'Empty'
         self.time = datetime.datetime.now()
+
 
 class Table():
     def __init__(self):
         self.numTrashCans = 0
-        self.trashCans = [TrashCan(0, 0)]
+        self.trash_cans = [TrashCan(0, 0)]
 
-    def addCan(self, trashCan):
-        self.trashCans.append(trashCan)
+    def add_can(self, trash_can):
+        self.trash_cans.append(trash_can)
         self.numTrashCans = self.numTrashCans + 1
 
-
-    def getTableBlock(self):
+    def get_table_block(self):
         block = ''
-        for can in self.trashCans:
-            block = block + '\n<tr><td>' + str(can.trashID) + '</td><td>' + str(can.trashLevel) + '</td> '
+        for can in self.trash_cans:
+            block = block + '\n<tr><td>' + str(can.trash_id) + '</td><td>' + str(can.trash_level) + '</td> '
             block = block + '<td>' + can.trash_state + '</td><td>' + str(can.time) + '</td></tr>'
         return block
