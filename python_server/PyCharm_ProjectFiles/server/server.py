@@ -3,6 +3,7 @@ import table.tableFactory as tbFactory
 from io import BytesIO
 import codecs
 
+
 PORT = 8080
 cssHeader = '''
 <!DOCTYPE html>
