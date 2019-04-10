@@ -52,7 +52,7 @@ void setup() {
   Serial.println("Attempting to connect to webserver");
   Serial.println();
 
-  String PostData = "0 90";
+  String PostData = "1 50";
   if(client.connect(server, PORT)){
     //client.println("GET / HTTP/1.1");
     client.println("POST /test HTTP/1.1");

@@ -28,7 +28,7 @@ htmlFooter = '''
 
 
 table = tbFactory.Table()
-table.addCan(trashCan=tbFactory.TrashCan(1, 0))
+table.add_can(trash_can=tbFactory.TrashCan(1, 0))
 
 class Handler(BaseHTTPRequestHandler):
 
@@ -40,21 +40,25 @@ class Handler(BaseHTTPRequestHandler):
         #file = codecs.open("index.html", 'r')
         #html = file.read()
 
-        htmlTable = tbFactory.htmlTableHeader + table.getTableBlock() + tbFactory.htmlTableFooter
+        htmlTable = tbFactory.htmlTableHeader + table.get_table_block() + tbFactory.htmlTableFooter
         html = cssHeader + htmlHeader + htmlTable + htmlFooter
 
         self.wfile.write(html.encode())
 
     def do_POST(self):
+
+        # Process POST data
         content_length = int(self.headers['Content-Length'])
         body = self.rfile.read(content_length)
         self.send_response(200)
         self.end_headers()
 
-
         try:
+
+            # Tokenize data
             data = str(body).split(' ')
 
+            # Remove any unneeded characters
             i = 0
             for prop in data:
                 prop = prop.replace('\\', '')
@@ -63,7 +67,9 @@ class Handler(BaseHTTPRequestHandler):
                 data[i] = prop
                 i = i + 1
 
+            # Update table model with new data
             table.trashCans[int(data[0])].trashLevel = int(data[1])
+
         except:
             print("Something went wrong when parsing!")
 
