@@ -55,17 +55,17 @@ void setup()
 }
 
 
-int i = 0;
+//int i = 0;
 void loop() 
 { 
   if(interrupt_counter == COUNTER_LIMIT)
   { 
     Serial.flush();
     interrupt_counter = 0;
-    //connector.SendPost(ReadUltrasonic(MCUID));
-    connector.SendPost("0 " + String(i));
+    connector.SendPost(ReadUltrasonic());
+    //connector.SendPost("0 " + String(i));
     Serial.println("POST Sent!");
   }
-  i++;
+  //i = i + 5;
   sleep();
 }

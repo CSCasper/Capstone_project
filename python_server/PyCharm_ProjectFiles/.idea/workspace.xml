@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8054c1d8-2987-4625-a906-9654398b2f04" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../Ultrasonic_tests/Ultrasonic_tests.ino" beforeDir="false" afterPath="$PROJECT_DIR$/../../Ultrasonic_tests/Ultrasonic_tests.ino" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arduino_integrated/arduino_integrated.ino" beforeDir="false" afterPath="$PROJECT_DIR$/../../arduino_integrated/arduino_integrated.ino" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arduino_integrated/ultrasonic.ino" beforeDir="false" afterPath="$PROJECT_DIR$/../../arduino_integrated/ultrasonic.ino" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../arduino_integrated/wifi.h" beforeDir="false" afterPath="$PROJECT_DIR$/../../arduino_integrated/wifi.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/table/tableFactory.py" beforeDir="false" afterPath="$PROJECT_DIR$/table/tableFactory.py" afterDir="false" />
-    </list>
+    <list default="true" id="8054c1d8-2987-4625-a906-9654398b2f04" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,10 +131,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="1315" />
-    <option name="y" value="-8" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
     <option name="width" value="1815" />
-    <option name="height" value="988" />
+    <option name="height" value="989" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -268,7 +260,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="2062" height="1126" extended-state="6" />
+    <frame x="-7" y="-7" width="2062" height="1126" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25074926" />

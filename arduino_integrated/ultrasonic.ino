@@ -1,6 +1,6 @@
 #include "variables.h"
 
-String ReadUltrasonic(int mcuID)
+String ReadUltrasonic()
 {
   long duration, cm;
   
@@ -102,7 +102,7 @@ String ReadUltrasonic(int mcuID)
     cmLevel=sum5/state5;
   }
   
-  tableInput=String(mcuID) + " " + String(cmLevel); // construct final string based on mcuID and stateID
+  tableInput=String(MCUID) + " " + String(cmLevel); // construct final string based on mcuID and stateID
   Serial.print(tableInput);
   Serial.println();
 
