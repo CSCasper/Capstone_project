@@ -19,16 +19,30 @@ class TrashCan:
         self.trash_state = 'Empty'
         self.time = datetime.datetime.now()
 
+    def update_trash_state(self):
+        if self.trash_level >= 64:
+            self.trash_state = "Empty"
+        elif self.trash_level >= 53:
+            self.trash_state = "Quarter Full"
+        elif self.trash_level >= 42:
+            self.trash_state = "Half Full"
+        elif self.trash_level >= 31:
+            self.trash_state = "Three Quarters Full"
+        elif self.trash_level < 31:
+            self.trash_state = "Full"
+
 
 class Table():
     def __init__(self):
         self.numTrashCans = 0
         self.trash_cans = [TrashCan(0, 0)]
 
+    # add trash can to table
     def add_can(self, trash_can):
         self.trash_cans.append(trash_can)
         self.numTrashCans = self.numTrashCans + 1
 
+    # returns html table for trash cans as a string
     def get_table_block(self):
         block = ''
         for can in self.trash_cans:

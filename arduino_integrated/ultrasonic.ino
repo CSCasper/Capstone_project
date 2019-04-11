@@ -103,8 +103,9 @@ String ReadUltrasonic()
   }
   
   tableInput=String(MCUID) + " " + String(cmLevel); // construct final string based on mcuID and stateID
-  Serial.print(tableInput);
-  Serial.println();
+  #ifdef SERIAL_DEBUG
+    Serial.println(tableInput);
+  #endif
 
   return(tableInput);
 }

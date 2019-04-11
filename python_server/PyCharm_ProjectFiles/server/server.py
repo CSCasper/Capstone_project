@@ -1,7 +1,6 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import table.tableFactory as tbFactory
 from io import BytesIO
-import codecs
 import datetime
 
 
@@ -28,7 +27,7 @@ htmlFooter = '''
 </html>
 '''
 
-
+# Create trash table configured with three TrashCans
 table = tbFactory.Table()
 table.add_can(trash_can=tbFactory.TrashCan(1, 0))
 
@@ -40,6 +39,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/html")
         self.end_headers()
 
+        # Build html page and send it to the client
         html_table = tbFactory.htmlTableHeader + table.get_table_block() + tbFactory.htmlTableFooter
         html = cssHeader + htmlHeader + html_table + htmlFooter
 
@@ -68,24 +68,12 @@ class Handler(BaseHTTPRequestHandler):
                 i = i + 1
 
             # Update table model with new data
+            trash_id = int(data[0]);
+            trash_level = int(data[1]);
 
-            id = int(data[0]);
-            level = int(data[1]);
-
-            table.trash_cans[id].trash_level = level
-            table.trash_cans[id].time = datetime.datetime.now()
-
-            if level >= 64:
-                table.trash_cans[id].trash_state = "Empty"
-            elif level >= 53:
-                table.trash_cans[id].trash_state = "Quarter Full"
-            elif level >= 42:
-                table.trash_cans[id].trash_state = "Half Full"
-            elif level >= 31:
-                table.trash_cans[id].trash_state = "Three Quarters Full"
-            elif level < 31:
-                table.trash_cans[id].trash_state = "Full"
-
+            table.trash_cans[trash_id].trash_level = trash_level
+            table.trash_cans[trash_id].time = datetime.datetime.now()
+            table.trash_cans[trash_id].update_trash_state()
 
         except:
             print("Something went wrong when parsing!")
@@ -97,6 +85,7 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(response.getvalue())
 
 
+# Server startup
 httpd = HTTPServer(('', PORT), Handler)
 print('Serving port: ', PORT)
 httpd.serve_forever()
