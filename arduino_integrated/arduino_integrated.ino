@@ -1,19 +1,19 @@
 #include "wifi.h"
+#include "ultrasonic.h"
+#include "variables.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
 
 WiFiConnector connector;
-
-#define COUNTER_LIMIT 5
-
 volatile int interrupt_counter = 0;
 
 ISR(RTC_CNT_vect)
 { 
   RTC.INTFLAGS = RTC_OVF_bm;
   interrupt_counter++;
-  Serial.println("Interrupt!");  
+  Serial.print(interrupt_counter);
+  Serial.println(" Interrupt!");  
 }
 
 void sleep()
@@ -26,9 +26,13 @@ void sleep()
 
 void setup()
 {
+  pinMode(TRIGPIN, OUTPUT);
+  pinMode(ECHOPIN, INPUT);
+  
   Serial.begin(9600);
+  
   connector.ConnectToWiFi();
-
+  
   // Use 20MHz internal clock
   CLKCTRL.MCLKCTRLA = 0x00;
 
@@ -44,19 +48,24 @@ void setup()
   RTC.CLKSEL = 0x00;
   
   // Real Time Counter period
-  RTC.PER = 1024;
+  RTC.PER = 512*SEC;
   // Enable Overflow Interrupt
   RTC.INTCTRL = 0x01;
-
+  interrupt_counter = 0;
 }
 
+
+int i = 0;
 void loop() 
-{
+{ 
   if(interrupt_counter == COUNTER_LIMIT)
-  {
+  { 
+    Serial.flush();
     interrupt_counter = 0;
-    connector.SendPost("1 50");
+    //connector.SendPost(ReadUltrasonic(MCUID));
+    connector.SendPost("0 " + String(i));
     Serial.println("POST Sent!");
-    sleep();
   }
+  i++;
+  sleep();
 }

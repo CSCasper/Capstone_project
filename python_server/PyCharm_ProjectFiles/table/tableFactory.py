@@ -33,5 +33,5 @@ class Table():
         block = ''
         for can in self.trash_cans:
             block = block + '\n<tr><td>' + str(can.trash_id) + '</td><td>' + str(can.trash_level) + '</td> '
-            block = block + '<td>' + can.trash_state + '</td><td>' + str(can.time) + '</td></tr>'
+            block = block + '<td>' + can.trash_state + '</td><td>' + str(can.time.strftime("%X")) + '</td></tr>'
         return block

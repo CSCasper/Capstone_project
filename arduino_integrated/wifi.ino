@@ -40,7 +40,7 @@ void WiFiConnector::ConnectToWiFi()
   else
   {
      // you're connected now, so print out the data:
-    Serial.print("You're connected to the network");
+    Serial.println("You're connected to the network.");
     printCurrentNet();
     printWifiData();
   }

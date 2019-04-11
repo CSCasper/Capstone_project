@@ -2,6 +2,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import table.tableFactory as tbFactory
 from io import BytesIO
 import codecs
+import datetime
 
 
 PORT = 8080
@@ -67,7 +68,24 @@ class Handler(BaseHTTPRequestHandler):
                 i = i + 1
 
             # Update table model with new data
-            table.trash_cans[int(data[0])].trash_level = int(data[1])
+
+            id = int(data[0]);
+            level = int(data[1]);
+
+            table.trash_cans[id].trash_level = level
+            table.trash_cans[id].time = datetime.datetime.now()
+
+            if level >= 64:
+                table.trash_cans[id].trash_state = "Empty"
+            elif level >= 53:
+                table.trash_cans[id].trash_state = "Quarter Full"
+            elif level >= 42:
+                table.trash_cans[id].trash_state = "Half Full"
+            elif level >= 31:
+                table.trash_cans[id].trash_state = "Three Quarters Full"
+            elif level < 31:
+                table.trash_cans[id].trash_state = "Full"
+
 
         except:
             print("Something went wrong when parsing!")

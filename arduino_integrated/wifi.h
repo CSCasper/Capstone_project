@@ -1,5 +1,5 @@
-#ifndef Wifi_h
-#define Wifi_h
+#ifndef wifi_h
+#define wifi_h
 #define PORT 8080
 
 //#define SECRET_SSID "WiFi@OSU"

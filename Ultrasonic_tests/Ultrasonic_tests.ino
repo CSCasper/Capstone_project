@@ -1,67 +1,122 @@
 
-int LED1 = 8;
-int LED2 = 9;
-int LED3 = 10;
+// GLOBAL VARIABLES
+int mcuID = 0;    // the ID number of the microcontrller - comment this out when uploading to MCU1
+//int mcuID = 1;  // the ID number of the microcontrller - comment this out when uploading to MCU0
+
 int trigPin = 11;    // Trigger
 int echoPin = 12;    // Echo
-long duration, cm, inches;
- 
+long duration, cm;
+
+// SETUP SECTION
 void setup() {
   //Serial Port begin
   Serial.begin (9600);
   //Define inputs and outputs
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  pinMode(LED1, OUTPUT);
-  pinMode(LED2, OUTPUT);
-  pinMode(LED3, OUTPUT);
-
 }
- 
-void loop() {
-  // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
-  // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
- 
-  // Read the signal from the sensor: a HIGH pulse whose
-  // duration is the time (in microseconds) from the sending
-  // of the ping to the reception of its echo off of an object.
-  pinMode(echoPin, INPUT);
-  duration = pulseIn(echoPin, HIGH);
- 
-  // Convert the time into a distance
-  //cm = (duration/2) / 29.1;     // Divide by 29.1 or multiply by 0.0343
-  inches = (duration/2) / 74;   // Divide by 74 or multiply by 0.0135
-  
-// Quantize distances to garbage can states
-  if (inches >= 35){
-    //Serial.print("Empty ");
-    digitalWrite(LED1, HIGH);
-    digitalWrite(LED2, LOW);
-    digitalWrite(LED3, LOW);
-  }
-  if (inches < 35 && inches >= 22){
-    //Serial.print("Half Full ");
-    digitalWrite(LED1, LOW);
-    digitalWrite(LED2, HIGH);
-    digitalWrite(LED3, LOW);
-  }
-  if (inches < 22 && inches >= 0){
-    //Serial.print("Full ");
-    digitalWrite(LED1, LOW);
-    digitalWrite(LED2, LOW);
-    digitalWrite(LED3, HIGH);
-  }
 
-  //Serial.print(inches);
-  //Serial.print("in, ");
-  //Serial.print(cm);
-  //Serial.print("cm");
-  //Serial.println();
+// MAIN LOOP
+void loop() {
+  String stateID = ""; // variable that holds the current state of trash
+  String tableInput = ""; // variable that holds the final input string for the table
+  int state1 = 0; //state 1 - 5 are the counters for the quantized states
+  int state2 = 0;
+  int state3 = 0;
+  int state4 = 0;
+  int state5 = 0;
+  int sum1 = 0; //sum 1 - 5 contains the sum of the distances for each region for averaging
+  int sum2 = 0;
+  int sum3 = 0;
+  int sum4 = 0;
+  int sum5 = 0;
+  int cmLevel; //variable that holds the average of the distances per pulse cycle
   
-  delay(500);
+  for (int i=0; i<5; i++){
+    // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
+    // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+   
+    // Read the signal from the sensor: a HIGH pulse whose
+    // duration is the time (in microseconds) from the sending
+    // of the ping to the reception of its echo off of an object.
+    pinMode(echoPin, INPUT);
+    duration = pulseIn(echoPin, HIGH);
+   
+    // Convert the time into a distance
+    cm = (duration/2) / 29.1;     // Divide by 29.1 or multiply by 0.0343
+    
+    // Quantize distances to garbage can states and count number of readings for each state
+    if (cm >= 64.25){
+      //Serial.print("Empty ");
+      state1 = state1+1;
+      sum1=sum1+cm;
+    }
+    
+    if (cm < 64.25 && cm >= 53.25){
+      //Serial.print("Quarter Full ");
+      state2 = state2+1;
+      sum2=sum2+cm;
+    }
+    
+    if (cm < 53.25 && cm >= 42.25){
+      //Serial.print("Half Full ");
+      state3 = state3+1;
+      sum3=sum3+cm;
+    }
+  
+    if (cm < 42.25 && cm >= 31.25){
+      //Serial.print("Three Quarters Full ");
+      state4 = state4+1;
+      sum4=sum4+cm;
+    }
+      
+    if (cm < 31.25){
+      //Serial.print("Full ");
+      state5 = state5+1;
+      sum5=sum5+cm;
+    }
+  
+    //Serial.print(cm);
+    //Serial.print("cm");
+    //Serial.println();
+    
+    delay(200); //delay between successive pulses
+  } //end for loop
+
+  // Define stateID based on majority of pulses (3 out of 5 pulses)
+  if (state1>=3){
+    //Serial.print("Empty");
+    cmLevel=sum1/state1;
+  }
+  
+  if (state2>=3){
+    //Serial.print("Quarter Full");
+    cmLevel=sum2/state2;
+  }
+  
+  if (state3>=3){
+    //Serial.print("Half Full");
+    cmLevel=sum3/state3;
+  }
+  
+  if (state4>=3){
+    //Serial.print("Three Quarters Full");
+    cmLevel=sum4/state4;
+  }
+  
+  if (state5>=3){
+    //Serial.print("Full");
+    cmLevel=sum5/state5;
+  }
+  
+  tableInput=String(mcuID) + " " + String(cmLevel); // construct final string based on mcuID and stateID
+  Serial.print(tableInput);
+  Serial.println();
+  
+  delay(10000); //simulates the sleeping cycle (10 sec)
 }
