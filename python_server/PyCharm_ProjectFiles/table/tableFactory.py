@@ -11,6 +11,11 @@ htmlTableHeader = '''       <table style="width:100%">
 htmlTableFooter = '''
         </table>'''
 
+htmlHistoryHeader = '''       <table style="width:100%">
+        <tr>
+            <th>Trash Can History</th>
+        </tr>
+'''
 
 class TrashCan:
     def __init__(self, trash_id, trash_level):
@@ -19,9 +24,13 @@ class TrashCan:
         self.trash_state = 'Empty'
         self.time = datetime.datetime.now()
 
+        self.past_states = []
+
     def update_trash_state(self):
         if self.trash_level >= 64:
             self.trash_state = "Empty"
+        elif self.trash_level > 100:
+            self.trash_state = "Full"
         elif self.trash_level >= 53:
             self.trash_state = "Quarter Full"
         elif self.trash_level >= 42:
@@ -30,6 +39,13 @@ class TrashCan:
             self.trash_state = "Three Quarters Full"
         elif self.trash_level < 31:
             self.trash_state = "Full"
+        else:
+            self.trash_state = "Invalid state"
+
+        self.past_states.append(self.generate_log_entry())
+
+    def generate_log_entry(self):
+        return str(self.trash_id) + " " + str(self.trash_level) + " " + str(self.time)
 
 
 class Table():
@@ -49,3 +65,13 @@ class Table():
             block = block + '\n<tr><td>' + str(can.trash_id) + '</td><td>' + str(can.trash_level) + '</td> '
             block = block + '<td>' + can.trash_state + '</td><td>' + str(can.time.strftime("%X")) + '</td></tr>'
         return block
+
+    def get_history_block_by_id(self, trash_id):
+        try:
+            block = ""
+            for state in self.trash_cans[trash_id].past_states:
+                block = block + "\n<tr><td>" + state + "</td></tr>"
+
+            return str(block)
+        except:
+            print("Error.")

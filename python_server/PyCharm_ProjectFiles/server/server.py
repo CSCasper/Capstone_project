@@ -31,6 +31,14 @@ htmlFooter = '''
 table = tbFactory.Table()
 table.add_can(trash_can=tbFactory.TrashCan(1, 0))
 
+table.trash_cans[0].past_states.append("1 40 15:23:50")
+table.trash_cans[0].past_states.append("1 50 15:24:00")
+table.trash_cans[0].past_states.append("1 60 15:24:10")
+
+table.trash_cans[1].past_states.append("1 10 Full 15:23:50")
+table.trash_cans[1].past_states.append("1 20 15:24:00")
+table.trash_cans[1].past_states.append("1 30 15:24:10")
+
 
 class Handler(BaseHTTPRequestHandler):
 
@@ -41,7 +49,9 @@ class Handler(BaseHTTPRequestHandler):
 
         # Build html page and send it to the client
         html_table = tbFactory.htmlTableHeader + table.get_table_block() + tbFactory.htmlTableFooter
-        html = cssHeader + htmlHeader + html_table + htmlFooter
+        history_table_0 = tbFactory.htmlHistoryHeader + table.get_history_block_by_id(0) + tbFactory.htmlTableFooter
+        history_table_1 = tbFactory.htmlHistoryHeader + table.get_history_block_by_id(1) + tbFactory.htmlTableFooter
+        html = cssHeader + htmlHeader + html_table + history_table_0 + history_table_1 + htmlFooter
 
         self.wfile.write(html.encode())
 
